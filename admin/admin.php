@@ -479,6 +479,12 @@ $GLOBALS["gtm4wp_integratefieldtexts"] = array(
 		"phase"         => GTM4WP_PHASE_BETA,
 		"plugintocheck" => "woocommerce/woocommerce.php"
 	),
+	GTM4WP_OPTION_INTEGRATE_WCEINCLUDECARTINDL => array(
+		"label"         => __( "Cart content in data layer", 'duracelltomi-google-tag-manager' ),
+		"description"   => __( "Enable this option to include the content of the cart in the data layer on each page. Needs WooCommerce v3.2 or newer. Especially useful for site personalization with Google Optimize.", 'duracelltomi-google-tag-manager' ),
+		"phase"         => GTM4WP_PHASE_BETA,
+		"plugintocheck" => "woocommerce/woocommerce.php"
+	),
 	GTM4WP_OPTION_INTEGRATE_WCUSEFULLCATEGORYPATH => array(
 		"label"         => __( "Include full category path", 'duracelltomi-google-tag-manager' ),
 		"description"   => __( "Check this to inclulde the full category path of each product in enhanced ecommerce tracking. WARNING! This can lead to performance issues on large sites with lots of traffic!", 'duracelltomi-google-tag-manager' ),

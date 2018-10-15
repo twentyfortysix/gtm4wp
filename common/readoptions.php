@@ -100,6 +100,7 @@ define( 'GTM4WP_OPTION_INTEGRATE_WCTRACKCLASSICEC',      'integrate-woocommerce-
 define( 'GTM4WP_OPTION_INTEGRATE_WCTRACKENHANCEDEC',     'integrate-woocommerce-track-enhanced-ecommerce' );
 define( 'GTM4WP_OPTION_INTEGRATE_WCPRODPERIMPRESSION',   'integrate-woocommerce-product-per-impression' );
 define( 'GTM4WP_OPTION_INTEGRATE_WCEECCARTASFIRSTSTEP',  'integrate-woocommerce-cart-as-first-step' );
+define( 'GTM4WP_OPTION_INTEGRATE_WCEINCLUDECARTINDL',    'integrate-woocommerce-cart-content-in-datalayer' );
 define( 'GTM4WP_OPTION_INTEGRATE_WCEECBRANDTAXONOMY',    'integrate-woocommerce-brand-taxonomy' );
 define( 'GTM4WP_OPTION_INTEGRATE_WCREMARKETING',         'integrate-woocommerce-remarketing' );
 define( 'GTM4WP_OPTION_INTEGRATE_WCUSESKU',              'integrate-woocommerce-remarketing-usesku' );
@@ -224,6 +225,7 @@ $gtm4wp_defaultoptions = array(
 	GTM4WP_OPTION_INTEGRATE_WCTRACKENHANCEDEC     => false,
 	GTM4WP_OPTION_INTEGRATE_WCPRODPERIMPRESSION   => 0,
 	GTM4WP_OPTION_INTEGRATE_WCEECCARTASFIRSTSTEP  => false,
+	GTM4WP_OPTION_INTEGRATE_WCEINCLUDECARTINDL    => false,
 	GTM4WP_OPTION_INTEGRATE_WCEECBRANDTAXONOMY    => "",
 	GTM4WP_OPTION_INTEGRATE_WCREMARKETING         => false,
 	GTM4WP_OPTION_INTEGRATE_WCUSESKU              => false,

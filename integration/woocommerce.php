@@ -157,6 +157,62 @@ function gtm4wp_woocommerce_datalayer_filter_items( $dataLayer ) {
 		$dataLayer["customerShippingCountry"]   = $woo_customer->get_shipping_country();
 	}
 
+	if ( $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCEINCLUDECARTINDL ] && version_compare( $woo->version, "3.2", ">=" ) ) {
+		$current_cart = $woo->cart;
+		$dataLayer["cartContent"] = array(
+			"totals" => array(
+				"applied_coupons" => $current_cart->get_applied_coupons(),
+				"discount_total"  => $current_cart->get_discount_total(),
+				"subtotal"        => $current_cart->get_subtotal(),
+				"total"           => $current_cart->get_cart_contents_total()
+			),
+			"items" => array()
+		);
+
+		foreach( $current_cart->get_cart() as $cart_item_id => $cart_item_data) {
+			$product = apply_filters( 'woocommerce_cart_item_product', $cart_item_data["data"], $cart_item_data, $cart_item_id );
+			if ( !apply_filters( GTM4WP_WPFILTER_EEC_CART_ITEM, true, $cart_item_data ) ) {
+				continue;
+			}
+
+			$product_id   = $product->get_id();
+			$product_type = $product->get_type();
+
+			if ( "variation" == $product_type ) {
+				$parent_product_id = ( $gtm4wp_is_woocommerce3 ? $product->get_parent_id() : $product->id);
+				$product_cat = gtm4wp_get_product_category( $parent_product_id, $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCUSEFULLCATEGORYPATH ] );
+			} else {
+				$product_cat = gtm4wp_get_product_category( $product_id, $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCUSEFULLCATEGORYPATH ] );
+			}
+
+			$remarketing_id = $product_id;
+			$product_sku    = $product->get_sku();
+			if ( $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCUSESKU ] && ( "" != $product_sku ) ) {
+				$remarketing_id = $product_sku;
+			}
+
+			$_temp_productdata = array(
+				"id"         => $remarketing_id,
+				"name"       => $product->get_title(),
+				"price"      => $product->get_price(),
+				"category"   => $product_cat,
+				"stocklevel" => $product->get_stock_quantity(),
+				"quantity"   => $cart_item_data["quantity"]
+			);
+
+			if ( $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCEECBRANDTAXONOMY ] != "" ) {
+				$_temp_productdata[ "brand" ] = gtm4wp_woocommerce_getproductterm( $remarketing_id, $gtm4wp_options[ GTM4WP_OPTION_INTEGRATE_WCEECBRANDTAXONOMY ] );
+			}
+
+			if ( "variation" == $product_type ) {
+				$_temp_productdata[ "variant" ] = implode(",", $product->get_variation_attributes());
+			}
+
+			$eec_product_array = apply_filters( GTM4WP_WPFILTER_EEC_PRODUCT_ARRAY, $_temp_productdata, "cart" );
+			$dataLayer["cartContent"]["items"][] = $eec_product_array;
+		}
+	}
+
 	if ( is_product_category() || is_product_tag() || is_front_page() || is_shop() ) {
 		$ecomm_pagetype = "category";
 		if ( is_front_page() ) {
