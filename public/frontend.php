@@ -43,6 +43,19 @@ function gtm4wp_escjs_boolean( $obj ) {
 	}
 }
 
+
+function _gtm4wp_get_parent_category_slugs($id){
+	$parents = get_category_parents($id, false, ',', 'slug');
+	$slugs = [];
+	$parents_array = explode(',', $parents);
+	foreach ( $parents_array as $parent ) {
+		$slugs[] = $parent;
+
+	}
+	return $slugs;
+}
+
+
 /**
  * Original copyright:
  * By Grant Burton @ BURTONTECH.COM
@@ -171,6 +184,9 @@ function gtm4wp_add_basic_datalayer_data( $dataLayer ) {
 				$dataLayer['pageCategory'] = array();
 				foreach ( $_post_cats as $_one_cat ) {
 					$dataLayer['pageCategory'][] = $_one_cat->slug;
+					// inject parent categories as well
+					$parent_categories = _gtm4wp_get_parent_category_slugs($_one_cat->term_id);
+					$dataLayer['pageCategory'] = array_filter(array_unique(array_merge($dataLayer['pageCategory'], $parent_categories)));
 				}
 			}
 		}
@@ -1056,3 +1072,4 @@ if ( isset( $GLOBALS['gtm4wp_options'] ) && ( $GLOBALS['gtm4wp_options'][ GTM4WP
 if ( isset( $GLOBALS['gtm4wp_options'] ) && ( $GLOBALS['gtm4wp_options'][ GTM4WP_OPTION_EVENTS_NEWUSERREG ] ) ) {
 	add_action( 'user_register', 'gtm4wp_user_register' );
 }
+
